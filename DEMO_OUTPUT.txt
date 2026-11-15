@@ -1,0 +1,68 @@
+
+Alice sees masked customers
+ALLOW | Allowed by attribute policy | served
+Rules: analytics-read | Request: 2db2ee4b-701b-4a0d-9411-8be747758a39
+[
+  {
+    "id": 1,
+    "tenant": "acme",
+    "customer_name": null,
+    "email": null
+  }
+]
+
+Bob sees customer PII
+ALLOW | Allowed by attribute policy | served
+Rules: analytics-read | Request: 338b0fe6-a343-4c49-bcbd-6b41d7ffee81
+[
+  {
+    "id": 1,
+    "tenant": "acme",
+    "customer_name": "Demo Customer A",
+    "email": "a@example.invalid"
+  }
+]
+
+Carol reads own tenant orders
+ALLOW | Allowed by attribute policy | served
+Rules: analytics-read | Request: 94344d13-9fea-4f16-a05f-04894388325f
+[
+  {
+    "id": 1,
+    "tenant": "beta",
+    "product": "Sensor kit",
+    "amount": 1800.0
+  }
+]
+
+Carol cannot cross tenants
+DENY  | Tenant boundary violation | denied
+Rules: (none) | Request: 957180a7-dd7e-41e1-b6e0-9df302fccad3
+
+Alice lacks finance clearance
+DENY  | Required conditions failed | denied
+Rules: clearance | Request: 7826fffb-e9a8-4ed9-80dd-3cf673ae9857
+
+Bob can read finance
+ALLOW | Allowed by attribute policy | served
+Rules: analytics-read | Request: 483215a2-3f16-45b8-82a6-ae7b34a0a934
+[
+  {
+    "id": 1,
+    "tenant": "acme",
+    "quarter": "2026-Q3",
+    "revenue": 150000.0
+  }
+]
+
+Bob denied without MFA
+DENY  | Required conditions failed | denied
+Rules: mfa | Request: 3ace7216-385e-4f2b-999d-40348a7a2836
+
+Alice denied on public network
+DENY  | Required conditions failed | denied
+Rules: trusted-network | Request: 13841a0f-d004-4c70-9c1c-170089528229
+
+Incident deny overrides allow
+DENY  | Explicit deny | denied
+Rules: incident-lockdown | Request: f617bc99-9a5b-47c3-915c-08af68180f98

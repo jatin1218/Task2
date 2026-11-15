@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "required": [
+    {"id": "active-user", "left": "user.active", "op": "eq", "value": true},
+    {"id": "tenant-isolation", "left": "user.tenant", "op": "eq", "right": "resource.tenant"},
+    {"id": "clearance", "left": "user.clearance", "op": "gte", "right": "resource.classification"},
+    {"id": "region", "left": "environment.region", "op": "eq", "right": "resource.region"},
+    {"id": "mfa", "left": "environment.mfa", "op": "eq", "value": true},
+    {"id": "trusted-network", "left": "environment.network", "op": "in", "value": ["office", "vpn"]}
+  ],
+  "deny": [
+    {"id": "incident-lockdown", "all": [{"left": "environment.lockdown", "op": "eq", "value": true}]}
+  ],
+  "allow": [
+    {"id": "analytics-read", "all": [
+      {"left": "action.name", "op": "eq", "value": "read"},
+      {"left": "user.purposes", "op": "contains", "right": "resource.purpose"},
+      {"left": "user.datasets", "op": "contains", "right": "resource.dataset"}
+    ]}
+  ],
+  "pii": [
+    {"left": "user.pii_access", "op": "eq", "value": true},
+    {"left": "user.employment", "op": "eq", "value": "internal"}
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "alice": {"name": "Alice - Acme analyst", "tenant": "acme", "active": true, "clearance": 2, "employment": "internal", "pii_access": false, "purposes": ["sales", "finance"], "datasets": ["customers", "orders"]},
+  "bob": {"name": "Bob - Acme sales lead", "tenant": "acme", "active": true, "clearance": 3, "employment": "internal", "pii_access": true, "purposes": ["sales", "finance"], "datasets": ["customers", "orders", "finance"]},
+  "carol": {"name": "Carol - Beta partner", "tenant": "beta", "active": true, "clearance": 1, "employment": "external", "pii_access": false, "purposes": ["sales"], "datasets": ["orders"]}
+}
